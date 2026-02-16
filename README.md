@@ -256,10 +256,10 @@ Interactive tutorials for learning and experimentation:
 ### Running Notebooks in Google Colab
 
 ```python
-# Option 1: Clone from GitHub
-!git clone https://github.com/YOUR_USERNAME/molt-shield.git /content/molt-shield
+# Clone from GitHub
+!git clone https://github.com/batmanvane/molt-shield.git /content/molt-shield
 
-# Option 2: Upload files manually
+# Or upload files manually
 # Upload src/ and config/ folders to Colab
 
 # Dependencies are auto-installed in each notebook

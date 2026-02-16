@@ -240,6 +240,31 @@ python -m src.cli rehydrate data.xml --vault vault/session.vault.json --in-place
 #    {"element": {"id": "e1", "pressure": "123.45"}}
 ```
 
+## Notebooks (Google Colab)
+
+Interactive tutorials for learning and experimentation:
+
+| Notebook | Description |
+|----------|-------------|
+| [molt_shield_demo.ipynb](notebooks/molt_shield_demo.ipynb) | Basic masking, shuffling, and rehydration |
+| [molt_shield_llm_demo.ipynb](notebooks/molt_shield_llm_demo.ipynb) | Full LLM workflow with simulated responses |
+| [custom_policies_workshop.ipynb](notebooks/custom_policies_workshop.ipynb) | Create policies for CFD, FEA, thermal simulations |
+| [batch_processing_pipeline.ipynb](notebooks/batch_processing_pipeline.ipynb) | Process multiple XML files automatically |
+| [fastapi_integration.ipynb](notebooks/fastapi_integration.ipynb) | REST API with FastAPI |
+| [cicd_github_actions.ipynb](notebooks/cicd_github_actions.ipynb) | CI/CD automation with GitHub Actions |
+
+### Running Notebooks in Google Colab
+
+```python
+# Option 1: Clone from GitHub
+!git clone https://github.com/YOUR_USERNAME/molt-shield.git /content/molt-shield
+
+# Option 2: Upload files manually
+# Upload src/ and config/ folders to Colab
+
+# Dependencies are auto-installed in each notebook
+```
+
 ## Docker Deployment
 
 ### Development

@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  molt-shield-dev:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: molt-shield-dev
+    environment:
+      - PYTHONPATH=/home/appuser
+      - MOLT_STRICT=false
+      - MOLT_HOST=0.0.0.0
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../src:/home/appuser/src:ro
+      - ../config:/home/appuser/config:ro
+      - ../tests:/home/appuser/tests
+      - dev_data_input:/home/appuser/data/input
+      - dev_data_output:/home/appuser/data/output
+      - dev_vault:/home/appuser/vault
+    tmpfs:
+      - /home/appuser/.pytest_cache:exec
+    command: >
+      sh -c "python -m pytest tests/ -v --tb=short && python -m src.server --host 0.0.0.0"
+
+  test-security:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    container_name: molt-shield-security-tests
+    environment:
+      - PYTHONPATH=/home/appuser
+      - MOLT_STRICT=true
+    volumes:
+      - ../src:/home/appuser/src:ro
+      - ../tests:/home/appuser/tests:ro
+      - ../scripts:/home/appuser/scripts:ro
+    command: >
+      sh -c "python -m pytest tests/security/ -v"
+    cap_add:
+      - NET_ADMIN
+
+volumes:
+  dev_data_input:
+  dev_data_output:
+  dev_vault:

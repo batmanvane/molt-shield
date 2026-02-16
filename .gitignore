@@ -1,0 +1,38 @@
+*.vault.json
+__pycache__/
+.pytest_cache/
+.venv/
+*.pyc
+*.egg-info/
+dist/
+build/
+.mypy_cache/
+.ruff_cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Coverage
+.coverage
+htmlcov/
+
+# Docker
+.dockerignore
+
+# Private docs (do not commit)
+MINIMAX_CLAUDE_CODE_SETUP.md
+MOLT-SHIELD-MASTER-PLAN.md

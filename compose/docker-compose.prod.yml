@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  molt-shield:
+    build:
+      context: ..
+      dockerfile: Dockerfile.prod
+    container_name: molt-shield
+    environment:
+      - MOLT_STRICT=true
+      - MOLT_HOST=127.0.0.1
+      - VAULT_KEY_FILE=/run/secrets/vault_key
+    ports:
+      - "3000:3000"
+    volumes:
+      - prod_input:/home/appuser/data/input:ro
+      - prod_output:/home/appuser/data/output
+      - prod_vault:/home/appuser/vault:rw
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:size=10M,mode=1777
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; s=socket.socket(); s.connect(('127.0.0.1',3000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  prod_input:
+  prod_output:
+  prod_vault:

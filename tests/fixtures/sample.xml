@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation>
+    <metadata>
+        <id>sim-001</id>
+        <type>thermal_analysis</type>
+    </metadata>
+    <element id="e1">
+        <pressure>123.45</pressure>
+        <temperature>500.0</temperature>
+        <velocity>25.5</velocity>
+    </element>
+    <element id="e2">
+        <pressure>678.90</pressure>
+        <temperature>600.0</temperature>
+        <velocity>30.2</velocity>
+    </element>
+    <node id="n1">
+        <coordinates x="10.5" y="20.3" z="30.7"/>
+    </node>
+</simulation>

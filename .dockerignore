@@ -1,0 +1,15 @@
+# Exclude files that shouldn't be in the image
+*.md
+.git
+.gitignore
+.pytest_cache
+.coverage
+htmlcov
+.venv
+*.egg-info
+.env
+.env.local
+
+# Private files
+MINIMAX_CLAUDE_CODE_SETUP.md
+MOLT-SHIELD-MASTER-PLAN.md

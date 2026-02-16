@@ -1,0 +1,50 @@
+{
+    "version": "1.0",
+    "global_masking": true,
+    "rules": [
+        {
+            "tag_pattern": "pressure",
+            "action": "mask_value",
+            "parameters": {
+                "format": "VAL_{uuid}"
+            }
+        },
+        {
+            "tag_pattern": "temperature",
+            "action": "mask_value",
+            "parameters": {
+                "format": "VAL_{uuid}"
+            }
+        },
+        {
+            "tag_pattern": "velocity",
+            "action": "mask_value",
+            "parameters": {
+                "format": "VAL_{uuid}"
+            }
+        },
+        {
+            "tag_pattern": "coordinates",
+            "action": "mask_value",
+            "parameters": {
+                "mask_attributes": ["x", "y", "z"]
+            }
+        },
+        {
+            "tag_pattern": "element",
+            "action": "shuffle_siblings",
+            "parameters": null
+        },
+        {
+            "tag_pattern": "metadata/id",
+            "action": "preserve",
+            "parameters": null
+        },
+        {
+            "tag_pattern": "metadata/type",
+            "action": "preserve",
+            "parameters": null
+        }
+    ],
+    "created_at": "2026-02-16T00:00:00Z"
+}

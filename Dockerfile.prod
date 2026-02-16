@@ -1,0 +1,43 @@
+# syntax=docker/dockerfile:1.4
+FROM python:3.12-alpine AS builder
+
+WORKDIR /build
+COPY pyproject.toml poetry.lock ./
+COPY src/ ./src/
+COPY config/ ./config/
+RUN pip install --no-cache poetry && \
+    poetry config virtualenvs.in-project true && \
+    poetry install --no-root --without dev
+
+FROM python:3.12-alpine AS runtime
+
+RUN apk add --no-cache openssl
+
+RUN addgroup -g 1000 appgroup && \
+    adduser -u 1000 -G appgroup -s /bin/sh -D appuser
+
+WORKDIR /home/appuser
+
+COPY --from=builder /build/.venv /home/appuser/.venv
+COPY --from=builder /build/src/ ./src/
+COPY --from=builder /build/config/ ./config/
+
+ENV PYTHONPATH=/home/appuser \
+    PATH=/home/appuser/.venv/bin:$PATH \
+    MOLT_STRICT=true \
+    MOLT_HOST=127.0.0.1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+VOLUME ["/home/appuser/data/input", "/home/appuser/data/output", "/home/appuser/vault"]
+
+COPY --chmod=755 scripts/entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
+USER appuser
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD python -c "import socket; s=socket.socket(); s.connect(('localhost',3000))" || exit 1
+
+EXPOSE 3000
+CMD ["python", "-m", "src.server"]

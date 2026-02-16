@@ -1,0 +1,13 @@
+security:
+  network_isolation: true
+  allowed_hosts: ["127.0.0.1", "localhost"]
+  blocked_ports: []
+
+filesystem:
+  input_readonly: true
+  output_writeonly: false
+  vault_encrypted: true
+
+process:
+  run_as_nonroot: true
+  no_new_privileges: true

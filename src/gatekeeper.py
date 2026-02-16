@@ -102,9 +102,12 @@ def shuffle_siblings(
     return etree.tostring(tree, encoding='unicode')
 
 
-def _apply_tag_shadowing(tree: etree._ElementTree | etree._Element, tag_map: dict[str, str]) -> etree._ElementTree:
+def _apply_tag_shadowing(tree: etree._ElementTree | etree._Element | str, tag_map: dict[str, str]) -> etree._ElementTree:
     """Rename tags according to *tag_map*."""
-    # Handle both Element (from fromstring) and ElementTree
+    # Handle string input (XML as string)
+    if isinstance(tree, str):
+        tree = etree.fromstring(tree.encode())
+    # Handle Element (from fromstring) vs ElementTree
     if isinstance(tree, etree._Element):
         tree = etree.ElementTree(tree)
     root = tree.getroot()

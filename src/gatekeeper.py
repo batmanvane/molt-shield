@@ -25,11 +25,15 @@ DEFAULT_TAG_MAP: dict[str, str] = {
 
 
 def mask_values(
-    tree: etree._ElementTree,
+    tree: etree._ElementTree | etree._Element,
     masking_config: MaskingConfig,
     vault: Vault,
 ) -> etree._ElementTree:
     """Replace numeric text content with UUID placeholders stored in the vault."""
+    # Handle both Element (from fromstring) and ElementTree
+    if isinstance(tree, etree._Element):
+        tree = etree.ElementTree(tree)
+
     pattern = re.compile(masking_config.value_pattern)
     root = tree.getroot()
 
@@ -45,18 +49,26 @@ def mask_values(
 
 
 def shuffle_siblings(
-    tree: etree._ElementTree,
+    tree: etree._ElementTree | etree._Element | str,
     shuffling_config: ShufflingConfig,
     rules: list[Rule] | None = None,
-) -> etree._ElementTree:
+) -> str:
     """Shuffle child elements to break positional inference.
 
     If *rules* are provided, only parent elements matching a shuffle_siblings
     rule are processed.  Otherwise every element whose tag appears in
     ``shuffling_config.target_tags`` has its children shuffled.
     """
+    # Handle string input (XML as string)
+    if isinstance(tree, str):
+        tree = etree.fromstring(tree.encode())
+
+    # Handle Element (from fromstring) vs ElementTree
+    if isinstance(tree, etree._Element):
+        tree = etree.ElementTree(tree)
+
     if not shuffling_config.enabled:
-        return tree
+        return etree.tostring(tree, encoding='unicode')
 
     rng = random.Random(shuffling_config.seed)
     root = tree.getroot()
@@ -87,7 +99,7 @@ def shuffle_siblings(
             for child in children:
                 elem.append(child)
 
-    return tree
+    return etree.tostring(tree, encoding='unicode')
 
 
 def _apply_tag_shadowing(tree: etree._ElementTree, tag_map: dict[str, str]) -> etree._ElementTree:
